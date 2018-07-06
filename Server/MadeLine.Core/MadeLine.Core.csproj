@@ -1,0 +1,23 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Folder Include="Managers\Product\" />
+    <Folder Include="Services\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\MadeLine.Data\MadeLine.Data.csproj" />
+    <ProjectReference Include="..\MadeLine.Extensions\MadeLine.Extensions.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="Microsoft.IdentityModel.Tokens">
+      <HintPath>C:\Program Files\dotnet\sdk\NuGetFallbackFolder\microsoft.identitymodel.tokens\5.2.0\lib\netstandard1.4\Microsoft.IdentityModel.Tokens.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+</Project>

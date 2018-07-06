@@ -1,0 +1,24 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.1</TargetFramework>
+    <UserSecretsId>b071898c-c987-44c9-98d8-b459744d32cc</UserSecretsId>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Folder Include="wwwroot\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.All" Version="2.1.0" />
+    <PackageReference Include="Microsoft.AspNetCore.App" />
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.1.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\MadeLine.Core\MadeLine.Core.csproj" />
+    <ProjectReference Include="..\MadeLine.Data\MadeLine.Data.csproj" />
+    <ProjectReference Include="..\MadeLine.Extensions\MadeLine.Extensions.csproj" />
+  </ItemGroup>
+
+</Project>
