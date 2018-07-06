@@ -5,8 +5,6 @@ VisualStudioVersion = 15.0.27703.2026
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Server", "Server", "{E8219930-7D6B-46BE-9986-D720B3088340}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Client", "Client", "{E2175837-887D-45F5-AA18-219FE52B45AA}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MadeLine.Api", "MadeLine.Api\MadeLine.Api.csproj", "{EEADBC7F-AC4E-4CB1-8918-0B93AD7E91FE}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MadeLine.Admin", "MadeLine.Admin\MadeLine.Admin.csproj", "{DAD9FF79-6183-4C9D-B548-A1D255833B19}"

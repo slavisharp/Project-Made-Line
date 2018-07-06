@@ -1,6 +1,11 @@
 ﻿namespace MadeLine.Api
 {
+    using MadeLine.Core.Settings;
     using MadeLine.Web.Config;
+    using Microsoft.AspNetCore.Builder;
+    using Microsoft.AspNetCore.Hosting;
+    using Microsoft.Extensions.Configuration;
+    using Microsoft.Extensions.DependencyInjection;
 
     public class Startup
     {
