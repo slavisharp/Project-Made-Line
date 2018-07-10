@@ -1,6 +1,7 @@
 ﻿namespace MadeLine.Api.Controllers
 {
     using MadeLine.Api.Auth;
+    using MadeLine.Api.Extensions.Mvc;
     using MadeLine.Api.Helpers;
     using MadeLine.Api.ViewModels;
     using MadeLine.Api.ViewModels.Accounts;
@@ -8,9 +9,11 @@
     using MadeLine.Data.Models;
     using Microsoft.AspNetCore.Identity;
     using Microsoft.AspNetCore.Mvc;
+    using Microsoft.AspNetCore.Mvc.ModelBinding;
     using Microsoft.Extensions.Options;
     using Newtonsoft.Json;
     using System;
+    using System.Linq;
     using System.Net.Http;
     using System.Security.Claims;
     using System.Text;
@@ -32,22 +35,36 @@
         }
 
         // POST api/auth/login
+        /// <summary>
+        /// Logs in user
+        /// </summary>
+        /// <param name="credentials"></param>
+        /// <returns>Security token</returns>
         [HttpPost("login")]
-        public async Task<IActionResult> Post([FromBody]LoginViewModel credentials)
+        [ProducesResponseType(statusCode: 200, Type = typeof(OkObjectViewModel<ResponseTokenViewModel>))]
+        [ProducesResponseType(statusCode: 400, Type = typeof(BadRequestViewModel<ModelStateError>))]
+        public async Task<ActionResult<OkObjectViewModel>> Post([FromBody]LoginViewModel credentials)
         {
             if (!ModelState.IsValid)
             {
-                return BadRequest(ModelState);
+                return new BadRequestObjectResult(new BadRequestViewModel<ModelStateError>() { Errors = ModelState.GetErrors() });
             }
 
             var identity = await GetClaimsIdentity(credentials.Email, credentials.Password);
             if (identity == null)
             {
-                return new BadRequestObjectResult(new { error = "Invalid username or password." });
+                ModelState.AddModelError(string.Empty, "Invalid username or password.");
+                return new BadRequestObjectResult(new BadRequestViewModel<ModelStateError>() { Errors = ModelState.GetErrors() });
             }
 
-            var jwt = await Token.GenerateJwt(identity, _jwtFactory, credentials.Email, _jwtOptions, new JsonSerializerSettings { Formatting = Formatting.Indented });
-            return new OkObjectResult(jwt);
+            var jwt = await Token.GenerateJwt(
+                identity, 
+                _jwtFactory, 
+                credentials.Email, 
+                _jwtOptions, 
+                new JsonSerializerSettings { Formatting = Formatting.Indented });
+
+            return new OkObjectResult(new OkObjectViewModel<ResponseTokenViewModel>() { Message = "Success", Data = jwt });
         }
 
         // POST api/auth/facebook

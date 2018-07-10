@@ -20,8 +20,15 @@
             this.manager = accountManager;
         }
 
+        /// <summary>
+        /// Register new user.
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns>Message</returns>
         [HttpPost]
-        public async Task<IActionResult> Post([FromBody]RegisterViewModel model)
+        [ProducesResponseType(statusCode: 200, Type = typeof(OkObjectViewModel))]
+        [ProducesResponseType(statusCode: 400, Type = typeof(BadRequestViewModel<IdentityError>))]
+        public async Task<ActionResult<OkObjectViewModel>> Post([FromBody]RegisterViewModel model)
         {
             if (!ModelState.IsValid)
             {
@@ -41,11 +48,11 @@
             
             if (result.Succeeded)
             {
-                return new OkObjectResult(new { message = "Account created" });
+                return new OkObjectResult(new OkObjectViewModel { Message = "Account created" });
             }
             else
             {
-                return new BadRequestObjectResult(new { errors = result.Errors });
+                return new BadRequestObjectResult(new BadRequestViewModel<IdentityError> () { Errors = result.Errors });
             }
         }
     }

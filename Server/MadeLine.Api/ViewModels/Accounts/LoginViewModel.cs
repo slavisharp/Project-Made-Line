@@ -10,4 +10,10 @@
         [Required]
         public string Password { get; set; }
     }
+
+    public class LoginResponseViewModel
+    {
+        [Required]
+        public string Token { get; set; }
+    }
 }

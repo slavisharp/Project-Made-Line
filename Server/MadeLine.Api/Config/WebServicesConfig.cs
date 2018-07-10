@@ -4,6 +4,7 @@
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.AspNetCore.ResponseCompression;
     using Microsoft.Extensions.DependencyInjection;
+    using Swashbuckle.AspNetCore.Swagger;
     using System.IO.Compression;
     using System.Linq;
 
@@ -28,6 +29,11 @@
                 options.MimeTypes = ResponseCompressionDefaults.MimeTypes.Concat(new[] { "image/svg+xml" });
             });
             services.Configure<GzipCompressionProviderOptions>(options => options.Level = CompressionLevel.Fastest);
+
+            services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1", new Info { Title = "Made Line API", Version = "v1" });
+            });
         }
     }
 }

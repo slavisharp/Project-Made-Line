@@ -1,6 +1,7 @@
 ﻿namespace MadeLine.Api.Helpers
 {
     using MadeLine.Api.Auth;
+    using MadeLine.Api.ViewModels.Accounts;
     using MadeLine.Core.Settings;
     using Newtonsoft.Json;
     using System.Linq;
@@ -9,16 +10,16 @@
 
     public static class Token
     {
-        public static async Task<string> GenerateJwt(ClaimsIdentity identity, IJwtFactory jwtFactory, string userName, JwtIssuerOptions jwtOptions, JsonSerializerSettings serializerSettings)
+        public static async Task<ResponseTokenViewModel> GenerateJwt(ClaimsIdentity identity, IJwtFactory jwtFactory, string userName, JwtIssuerOptions jwtOptions, JsonSerializerSettings serializerSettings)
         {
-            var response = new
+            var response = new ResponseTokenViewModel
             {
-                id = identity.Claims.Single(c => c.Type == "id").Value,
-                auth_token = await jwtFactory.GenerateEncodedToken(userName, identity),
-                expires_in = (int)jwtOptions.ValidFor.TotalSeconds
+                Id = identity.Claims.Single(c => c.Type == "id").Value,
+                Token = await jwtFactory.GenerateEncodedToken(userName, identity),
+                Expires = (int)jwtOptions.ValidFor.TotalSeconds
             };
 
-            return JsonConvert.SerializeObject(response, serializerSettings);
+            return response;
         }
     }
 }

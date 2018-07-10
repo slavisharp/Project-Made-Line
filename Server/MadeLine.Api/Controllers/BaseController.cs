@@ -7,6 +7,7 @@
     using Microsoft.Extensions.Options;
     using System.Threading.Tasks;
 
+    [Produces("application/json")]
     public abstract class BaseController : ControllerBase
     {
         //private ApplicationUser currentUser;
