@@ -1,0 +1,32 @@
+.men-wrap {
+  display: flex;
+  height: 100%;
+}
+
+.men-wrap .men {
+  flex: 50%;
+  animation: animate-men .5s forwards;
+}
+
+.men-wrap .women {
+  flex: 50%;
+  animation: animate-men-women .5s forwards;
+}
+
+@keyframes animate-men {
+  from {
+    flex: 50%;
+  }
+  to {
+    flex: 90%;
+  }
+}
+
+@keyframes animate-men-women {
+  from {
+    flex: 50%;
+  }
+  to {
+    flex: 10%;
+  }
+}

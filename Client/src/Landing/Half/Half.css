@@ -1,0 +1,14 @@
+.half {
+  flex: 1;
+  height: 100%;
+}
+
+.men {
+  background-color: #1f1f21;
+  color: #f2e5de;
+} 
+
+.women {
+  background-color: #f2e5de;
+  color: #1f1f21;
+}

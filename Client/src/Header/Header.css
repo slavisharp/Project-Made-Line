@@ -1,0 +1,34 @@
+header {
+  position: fixed;
+  top: 0;
+  width: 100%;
+  color: white;
+}
+
+header nav {
+  display: flex;
+  width: 100%;
+  font-size: 42px;
+}
+
+header nav a {
+  flex: 1;
+  text-align: center;
+  text-transform: uppercase;
+}
+
+header nav a.pull-left {
+  text-align: start;
+}
+
+header nav a.pull-right {
+  text-align: end;
+}
+
+.nav-men {
+  color: #f2e5de;
+}
+
+.nav-women {
+  color: #1f1f21;
+}
