@@ -15,6 +15,50 @@
         {
         }
 
+        public virtual DbSet<Address> Addresses { get; set; }
+
+        public virtual DbSet<Brand> Brands { get; set; }
+
+        public virtual DbSet<BrandTranslation> BrandTranslations { get; set; }
+
+        public virtual DbSet<Campaign> Campaigns { get; set; }
+
+        public virtual DbSet<CampaignTranslation> CampaignTranslations { get; set; }
+
+        public virtual DbSet<CampaignProduct> CampaignProducts { get; set; }
+
+        public virtual DbSet<Cart> Carts { get; set; }
+
+        public virtual DbSet<Category> Categories { get; set; }
+
+        public virtual DbSet<CategoryTranslation> CategoryTranslations { get; set; }
+
+        public virtual DbSet<Image> Images { get; set; }
+
+        public virtual DbSet<Order> Orders { get; set; }
+
+        public virtual DbSet<OrderItem> OrderItems { get; set; }
+
+        public virtual DbSet<OrderStatus> OrderStatuses { get; set; }
+
+        public virtual DbSet<Product> Products { get; set; }
+
+        public virtual DbSet<ProductTranslation> ProductTranslations { get; set; }
+
+        public virtual DbSet<ProductCategory> ProductCategories { get; set; }
+
+        public virtual DbSet<ProductColor> ProductColors { get; set; }
+
+        public virtual DbSet<ProductImage> ProductImages { get; set; }
+
+        public virtual DbSet<ProductSize> ProductSizes { get; set; }
+
+        public virtual DbSet<Size> Sizes { get; set; }
+
+        public virtual DbSet<Vlog> Vlogs { get; set; }
+
+        public virtual DbSet<VlogTranslation> VlogTranslations { get; set; }
+        
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);

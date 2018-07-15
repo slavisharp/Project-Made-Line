@@ -10,7 +10,6 @@
     using System.Threading.Tasks;
 
     [Route("api/[controller]")]
-    [ApiController]
     public class AccountsController : BaseController
     {
         private IAccountManager manager;

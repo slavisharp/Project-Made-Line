@@ -15,7 +15,9 @@
         public string UserRole { get; set; }
 
         public string BrandRole { get; set; }
-        
+
+        public DbSettings DbSettings { get; set; }
+
         public URLSettings URLS { get; set; }
 
         public EmailSettings EmailSettings { get; set; }
@@ -23,6 +25,13 @@
         public JwtIssuerOptions JwtIssuerOptions { get; set; }
 
         public FacebookAuthSettings FacebookAuthSettings { get; set; }
+    }
+
+    public class DbSettings
+    {
+        public string LocalConnectionName { get; set; }
+
+        public string AppHarborConnectionName { get; set; }
     }
 
     public class URLSettings

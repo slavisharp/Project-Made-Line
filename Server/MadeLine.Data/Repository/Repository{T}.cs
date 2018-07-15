@@ -19,8 +19,8 @@
 
         private DbSet<T> DbSet { get; }
 
-        private DbContext Context { get; }
-
+        public DbContext Context { get; }
+        
         /// <summary>
         /// Returns all entities from the DB
         /// </summary>

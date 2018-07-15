@@ -58,8 +58,8 @@
             // api user roles policy
             services.AddAuthorization(options =>
             {
-                options.AddPolicy($"Require{appSettings.UserRole}Role", policy => policy.RequireRole(appSettings.UserRole));
-                options.AddPolicy($"Require{appSettings.BrandRole}Role", policy => policy.RequireRole(appSettings.BrandRole));
+                options.AddPolicy($"Require{appSettings.UserRole}Role", policy => policy.RequireRole(appSettings.UserRole, appSettings.BrandRole, appSettings.AdminRole));
+                options.AddPolicy($"Require{appSettings.BrandRole}Role", policy => policy.RequireRole(appSettings.BrandRole, appSettings.AdminRole));
                 options.AddPolicy($"Require{appSettings.AdminRole}Role", policy => policy.RequireRole(appSettings.AdminRole));
             });
         }

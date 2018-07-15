@@ -5,6 +5,7 @@
     using MadeLine.Api.Helpers;
     using MadeLine.Api.ViewModels;
     using MadeLine.Api.ViewModels.Accounts;
+    using MadeLine.Core.Managers;
     using MadeLine.Core.Settings;
     using MadeLine.Data.Models;
     using Microsoft.AspNetCore.Identity;
@@ -13,6 +14,8 @@
     using Microsoft.Extensions.Options;
     using Newtonsoft.Json;
     using System;
+    using System.Collections;
+    using System.Collections.Generic;
     using System.Linq;
     using System.Net.Http;
     using System.Security.Claims;
@@ -22,16 +25,21 @@
     [Route("api/[controller]")]
     public class AuthController : BaseController
     {
-        private readonly UserManager<ApplicationUser> _userManager;
-        private readonly IJwtFactory _jwtFactory;
-        private readonly JwtIssuerOptions _jwtOptions;
+        //private readonly UserManager<ApplicationUser> userManager;
+        private readonly IAccountManager accountManager;
+        private readonly IJwtFactory jwtFactory;
+        private readonly JwtIssuerOptions jwtOptions;
         private static readonly HttpClient Client = new HttpClient();
 
-        public AuthController(IOptions<AppSettings> options, UserManager<ApplicationUser> userManager, IJwtFactory jwtFactory) : base(options)
+        public AuthController(
+            IOptions<AppSettings> options,
+            IAccountManager accountManager,
+            IJwtFactory jwtFactory) : base(options)
         {
-            _userManager = userManager;
-            _jwtFactory = jwtFactory;
-            _jwtOptions = base.AppSettings.JwtIssuerOptions;
+            //this.userManager = accountManager.UserManager;
+            this.accountManager = accountManager;
+            this.jwtFactory = jwtFactory;
+            this.jwtOptions = base.AppSettings.JwtIssuerOptions;
         }
 
         // POST api/auth/login
@@ -59,9 +67,9 @@
 
             var jwt = await Token.GenerateJwt(
                 identity, 
-                _jwtFactory, 
+                jwtFactory, 
                 credentials.Email, 
-                _jwtOptions, 
+                jwtOptions, 
                 new JsonSerializerSettings { Formatting = Formatting.Indented });
 
             return new OkObjectResult(new OkObjectViewModel<ResponseTokenViewModel>() { Message = "Success", Data = jwt });
@@ -88,7 +96,7 @@
             var userInfo = JsonConvert.DeserializeObject<FacebookUserData>(userInfoResponse);
 
             // 4. ready to create the local user account (if necessary) and jwt
-            var user = await _userManager.FindByEmailAsync(userInfo.Email);
+            var user = await accountManager.UserManager.FindByEmailAsync(userInfo.Email);
 
             if (user == null)
             {
@@ -102,7 +110,7 @@
                     PictureUrl = userInfo.Picture.Data.Url
                 };
 
-                var result = await _userManager.CreateAsync(appUser, Convert.ToBase64String(Guid.NewGuid().ToByteArray()).Substring(0, 8));
+                var result = await accountManager.UserManager.CreateAsync(appUser, Convert.ToBase64String(Guid.NewGuid().ToByteArray()).Substring(0, 8));
 
                 if (!result.Succeeded)
                 {
@@ -117,14 +125,20 @@
             }
 
             // generate the jwt for the local user...
-            var localUser = await _userManager.FindByNameAsync(userInfo.Email);
+            var localUser = await accountManager.UserManager.FindByNameAsync(userInfo.Email);
+            //var roles = await _userManager.GetRolesAsync(localUser);  ---- NOT WORKING ?!?!?
+            IEnumerable<string> roles = accountManager.GetUserRoleNames(localUser); ;
 
             if (localUser == null)
             {
                 return new BadRequestObjectResult(new { error = "Failed to create local user account." });
             }
 
-            var jwt = await Token.GenerateJwt(_jwtFactory.GenerateClaimsIdentity(localUser.UserName, localUser.Id), _jwtFactory, localUser.UserName, _jwtOptions, new JsonSerializerSettings { Formatting = Formatting.Indented });
+            var jwt = await Token.GenerateJwt(
+                jwtFactory.GenerateClaimsIdentity(localUser.UserName, localUser.Id, roles),
+                jwtFactory, 
+                localUser.UserName, 
+                jwtOptions, new JsonSerializerSettings { Formatting = Formatting.Indented });
 
             return new OkObjectResult(jwt);
         }
@@ -135,14 +149,16 @@
                 return await Task.FromResult<ClaimsIdentity>(null);
 
             // get the user to verifty
-            var userToVerify = await _userManager.FindByNameAsync(userName);
+            var userToVerify = await accountManager.UserManager.FindByNameAsync(userName);
+            //var roles = await _userManager.GetRolesAsync(userToVerify); ---- NOT WORKING ?!?!
+            IEnumerable<string> roles = accountManager.GetUserRoleNames(userToVerify);
 
             if (userToVerify == null) return await Task.FromResult<ClaimsIdentity>(null);
 
             // check the credentials
-            if (await _userManager.CheckPasswordAsync(userToVerify, password))
+            if (await accountManager.UserManager.CheckPasswordAsync(userToVerify, password))
             {
-                return await Task.FromResult(_jwtFactory.GenerateClaimsIdentity(userName, userToVerify.Id));
+                return await Task.FromResult(jwtFactory.GenerateClaimsIdentity(userName, userToVerify.Id, roles));
             }
 
             // Credentials are invalid, or account doesn't exist
