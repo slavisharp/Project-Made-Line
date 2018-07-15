@@ -14,9 +14,9 @@ class Half extends Component {
   }
 
   handleComingFromPage = () => {
-    if (this.props.stores.CurrentPage.page == "men") {
+    if (this.props.stores.CurrentPage.page === "men") {
       this.comingFromPage = "coming-from-" + this.props.stores.CurrentPage.page;
-    } else if (this.props.stores.CurrentPage.page == "women") {
+    } else if (this.props.stores.CurrentPage.page === "women") {
       this.comingFromPage = "coming-from-" + this.props.stores.CurrentPage.page;
     } else {
       return;
@@ -29,7 +29,11 @@ class Half extends Component {
 
   render() {
     return (
-      <div className={`half ${this.props.type} ${this.comingFromPage}`}>
+      <div
+        className={`half ${this.props.type} ${
+          this.comingFromPage
+        } content-padded`}
+      >
         {this.props.type}
       </div>
     );

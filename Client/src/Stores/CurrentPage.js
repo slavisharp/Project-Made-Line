@@ -1,7 +1,7 @@
 import { observable } from "mobx";
 
 class CurrentPage {
-  @observable page = 'baaaaaaa'
+  @observable page = "";
 }
 
 export default new CurrentPage();
