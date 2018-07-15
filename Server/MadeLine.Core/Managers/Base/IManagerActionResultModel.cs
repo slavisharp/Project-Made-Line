@@ -9,7 +9,7 @@
 
         T Model { get; }
 
-        IEnumerable<IErrorResultModel> Errors { get; }
+        IList<IErrorResultModel> Errors { get; }
     }
 
     public interface IErrorResultModel

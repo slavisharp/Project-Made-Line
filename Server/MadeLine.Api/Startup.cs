@@ -44,18 +44,21 @@
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
-                app.UseSwagger();
-                app.UseSwaggerUI(c =>
-                {
-                    c.SwaggerEndpoint("/swagger/v1/swagger.json", "Made Line API");
-                    c.RoutePrefix = string.Empty;
-                });
             }
             else
             {
                 app.UseHsts();
             }
 
+            //if (env.IsDevelopment())
+            //{
+            app.UseSwagger();
+            app.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "Made Line API");
+                c.RoutePrefix = string.Empty;
+            });
+            //}
             app.UseHttpsRedirection();
             app.UseCors("CorsPolicy");
             app.UseAuthentication();

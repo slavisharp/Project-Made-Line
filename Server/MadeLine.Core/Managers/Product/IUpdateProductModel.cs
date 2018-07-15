@@ -1,10 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace MadeLine.Core.Managers.Product
+﻿namespace MadeLine.Core.Managers
 {
-    interface IUpdateProductModel
+    using System;
+    using System.Collections.Generic;
+    using System.Text;
+
+    public interface IUpdateProductModel : ICreateProductModel
     {
     }
 }
