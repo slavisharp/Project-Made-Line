@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace MadeLine.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20180617205022_InitialCatalog")]
-    partial class InitialCatalog
+    [Migration("20180715093057_InitialSchema")]
+    partial class InitialSchema
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -62,7 +62,7 @@ namespace MadeLine.Data.Migrations
 
                     b.HasIndex("UserId1");
 
-                    b.ToTable("Address");
+                    b.ToTable("Addresses");
                 });
 
             modelBuilder.Entity("MadeLine.Data.Models.ApplicationUser", b =>
@@ -171,7 +171,30 @@ namespace MadeLine.Data.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Brand");
+                    b.ToTable("Brands");
+                });
+
+            modelBuilder.Entity("MadeLine.Data.Models.BrandTranslation", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("BrandId");
+
+                    b.Property<string>("Description");
+
+                    b.Property<int>("Language");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(50);
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("BrandId");
+
+                    b.ToTable("BrandTranslations");
                 });
 
             modelBuilder.Entity("MadeLine.Data.Models.Campaign", b =>
@@ -205,7 +228,7 @@ namespace MadeLine.Data.Migrations
 
                     b.HasIndex("ThumbnailId");
 
-                    b.ToTable("Campaign");
+                    b.ToTable("Campaigns");
                 });
 
             modelBuilder.Entity("MadeLine.Data.Models.CampaignProduct", b =>
@@ -234,7 +257,57 @@ namespace MadeLine.Data.Migrations
 
                     b.HasIndex("ProductId");
 
-                    b.ToTable("CampaignProduct");
+                    b.ToTable("CampaignProducts");
+                });
+
+            modelBuilder.Entity("MadeLine.Data.Models.CampaignTranslation", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("CampaignId");
+
+                    b.Property<string>("Description");
+
+                    b.Property<int>("Language");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(50);
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CampaignId");
+
+                    b.ToTable("CampaignTranslations");
+                });
+
+            modelBuilder.Entity("MadeLine.Data.Models.Cart", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<DateTime>("Created");
+
+                    b.Property<DateTime?>("DeletedOn");
+
+                    b.Property<bool>("IsDeleted");
+
+                    b.Property<DateTime?>("Modified");
+
+                    b.Property<string>("UniqueKey")
+                        .IsRequired()
+                        .HasMaxLength(50);
+
+                    b.Property<string>("UserId");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Carts");
                 });
 
             modelBuilder.Entity("MadeLine.Data.Models.Category", b =>
@@ -249,7 +322,28 @@ namespace MadeLine.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Category");
+                    b.ToTable("Categories");
+                });
+
+            modelBuilder.Entity("MadeLine.Data.Models.CategoryTranslation", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("CategoryId");
+
+                    b.Property<int>("Language");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(50);
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CategoryId");
+
+                    b.ToTable("CategoryTranslations");
                 });
 
             modelBuilder.Entity("MadeLine.Data.Models.Country", b =>
@@ -269,6 +363,27 @@ namespace MadeLine.Data.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Country");
+                });
+
+            modelBuilder.Entity("MadeLine.Data.Models.CountryTranslation", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("CountryId");
+
+                    b.Property<int>("Language");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(50);
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CountryId");
+
+                    b.ToTable("CountryTranslation");
                 });
 
             modelBuilder.Entity("MadeLine.Data.Models.Image", b =>
@@ -297,7 +412,7 @@ namespace MadeLine.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Image");
+                    b.ToTable("Images");
                 });
 
             modelBuilder.Entity("MadeLine.Data.Models.Order", b =>
@@ -342,7 +457,7 @@ namespace MadeLine.Data.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Order");
+                    b.ToTable("Orders");
                 });
 
             modelBuilder.Entity("MadeLine.Data.Models.OrderItem", b =>
@@ -350,6 +465,8 @@ namespace MadeLine.Data.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int?>("CartId");
 
                     b.Property<DateTime>("Created");
 
@@ -362,7 +479,7 @@ namespace MadeLine.Data.Migrations
 
                     b.Property<DateTime?>("Modified");
 
-                    b.Property<int>("OrderId");
+                    b.Property<int?>("OrderId");
 
                     b.Property<string>("OrderId1");
 
@@ -393,11 +510,13 @@ namespace MadeLine.Data.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("CartId");
+
                     b.HasIndex("OrderId1");
 
                     b.HasIndex("ProductId");
 
-                    b.ToTable("OrderItem");
+                    b.ToTable("OrderItems");
                 });
 
             modelBuilder.Entity("MadeLine.Data.Models.OrderStatus", b =>
@@ -421,7 +540,7 @@ namespace MadeLine.Data.Migrations
 
                     b.HasIndex("OrderId1");
 
-                    b.ToTable("OrderStatus");
+                    b.ToTable("OrderStatuses");
                 });
 
             modelBuilder.Entity("MadeLine.Data.Models.Product", b =>
@@ -490,7 +609,7 @@ namespace MadeLine.Data.Migrations
 
                     b.HasIndex("SKUCode");
 
-                    b.ToTable("Product");
+                    b.ToTable("Products");
                 });
 
             modelBuilder.Entity("MadeLine.Data.Models.ProductCategory", b =>
@@ -503,7 +622,7 @@ namespace MadeLine.Data.Migrations
 
                     b.HasIndex("CategoryId");
 
-                    b.ToTable("ProductCategory");
+                    b.ToTable("ProductCategories");
                 });
 
             modelBuilder.Entity("MadeLine.Data.Models.ProductColor", b =>
@@ -522,7 +641,7 @@ namespace MadeLine.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("ProductColor");
+                    b.ToTable("ProductColors");
                 });
 
             modelBuilder.Entity("MadeLine.Data.Models.ProductImage", b =>
@@ -535,7 +654,7 @@ namespace MadeLine.Data.Migrations
 
                     b.HasIndex("ImageId");
 
-                    b.ToTable("ProductImage");
+                    b.ToTable("ProductImages");
                 });
 
             modelBuilder.Entity("MadeLine.Data.Models.ProductSize", b =>
@@ -556,7 +675,30 @@ namespace MadeLine.Data.Migrations
 
                     b.HasIndex("SizeId");
 
-                    b.ToTable("ProductSize");
+                    b.ToTable("ProductSizes");
+                });
+
+            modelBuilder.Entity("MadeLine.Data.Models.ProductTranslation", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Description");
+
+                    b.Property<int>("Language");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(50);
+
+                    b.Property<int>("ProductId");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ProductId");
+
+                    b.ToTable("ProductTranslations");
                 });
 
             modelBuilder.Entity("MadeLine.Data.Models.Size", b =>
@@ -570,7 +712,62 @@ namespace MadeLine.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Size");
+                    b.ToTable("Sizes");
+                });
+
+            modelBuilder.Entity("MadeLine.Data.Models.Vlog", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Alias")
+                        .IsRequired()
+                        .HasMaxLength(100);
+
+                    b.Property<DateTime>("Created");
+
+                    b.Property<DateTime?>("DeletedOn");
+
+                    b.Property<string>("EmbededVideo")
+                        .IsRequired();
+
+                    b.Property<bool>("IsDeleted");
+
+                    b.Property<DateTime?>("Modified");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(100);
+
+                    b.Property<int?>("ThumbnailId");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ThumbnailId");
+
+                    b.ToTable("Vlogs");
+                });
+
+            modelBuilder.Entity("MadeLine.Data.Models.VlogTranslation", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("Language");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(100);
+
+                    b.Property<int>("VlogId");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("VlogId");
+
+                    b.ToTable("VlogTranslations");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -708,6 +905,14 @@ namespace MadeLine.Data.Migrations
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
+            modelBuilder.Entity("MadeLine.Data.Models.BrandTranslation", b =>
+                {
+                    b.HasOne("MadeLine.Data.Models.Brand", "Brand")
+                        .WithMany("Translations")
+                        .HasForeignKey("BrandId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
             modelBuilder.Entity("MadeLine.Data.Models.Campaign", b =>
                 {
                     b.HasOne("MadeLine.Data.Models.Image", "Thumbnail")
@@ -729,6 +934,37 @@ namespace MadeLine.Data.Migrations
                         .OnDelete(DeleteBehavior.Restrict);
                 });
 
+            modelBuilder.Entity("MadeLine.Data.Models.CampaignTranslation", b =>
+                {
+                    b.HasOne("MadeLine.Data.Models.Campaign", "Campaign")
+                        .WithMany("Translations")
+                        .HasForeignKey("CampaignId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("MadeLine.Data.Models.Cart", b =>
+                {
+                    b.HasOne("MadeLine.Data.Models.ApplicationUser", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId");
+                });
+
+            modelBuilder.Entity("MadeLine.Data.Models.CategoryTranslation", b =>
+                {
+                    b.HasOne("MadeLine.Data.Models.Category", "Category")
+                        .WithMany("Translations")
+                        .HasForeignKey("CategoryId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("MadeLine.Data.Models.CountryTranslation", b =>
+                {
+                    b.HasOne("MadeLine.Data.Models.Country", "Country")
+                        .WithMany("Translations")
+                        .HasForeignKey("CountryId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
             modelBuilder.Entity("MadeLine.Data.Models.Order", b =>
                 {
                     b.HasOne("MadeLine.Data.Models.Address", "BillingAddress")
@@ -748,6 +984,10 @@ namespace MadeLine.Data.Migrations
 
             modelBuilder.Entity("MadeLine.Data.Models.OrderItem", b =>
                 {
+                    b.HasOne("MadeLine.Data.Models.Cart", "Cart")
+                        .WithMany("OrderItems")
+                        .HasForeignKey("CartId");
+
                     b.HasOne("MadeLine.Data.Models.Order", "Order")
                         .WithMany("OrderItems")
                         .HasForeignKey("OrderId1");
@@ -828,6 +1068,29 @@ namespace MadeLine.Data.Migrations
                     b.HasOne("MadeLine.Data.Models.Size", "Size")
                         .WithMany("Products")
                         .HasForeignKey("SizeId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("MadeLine.Data.Models.ProductTranslation", b =>
+                {
+                    b.HasOne("MadeLine.Data.Models.Product", "Product")
+                        .WithMany("Translations")
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("MadeLine.Data.Models.Vlog", b =>
+                {
+                    b.HasOne("MadeLine.Data.Models.Image", "Thumbnail")
+                        .WithMany()
+                        .HasForeignKey("ThumbnailId");
+                });
+
+            modelBuilder.Entity("MadeLine.Data.Models.VlogTranslation", b =>
+                {
+                    b.HasOne("MadeLine.Data.Models.Vlog", "Vlog")
+                        .WithMany("Translations")
+                        .HasForeignKey("VlogId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 

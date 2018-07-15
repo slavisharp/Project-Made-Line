@@ -1,9 +1,11 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Security.Principal;
 using System.Threading.Tasks;
 using MadeLine.Core.Settings;
+using MadeLine.Data.Models;
 using Microsoft.Extensions.Options;
 
 
@@ -21,15 +23,19 @@ namespace MadeLine.Api.Auth
 
         public async Task<string> GenerateEncodedToken(string userName, ClaimsIdentity identity)
         {
-            var claims = new[]
-         {
+            var claims = new List<Claim>()
+            {
                  new Claim(JwtRegisteredClaimNames.Sub, userName),
                  new Claim(JwtRegisteredClaimNames.Jti, await _jwtOptions.JtiGenerator()),
                  new Claim(JwtRegisteredClaimNames.Iat, ToUnixEpochDate(_jwtOptions.IssuedAt).ToString(), ClaimValueTypes.Integer64),
-                 identity.FindFirst(StaticVariables.JWT_ROL),
                  identity.FindFirst(StaticVariables.JWT_ID)
              };
 
+            foreach (var item in identity.FindAll(ClaimTypes.Role))
+            {
+                claims.Add(item);
+            }
+            
             // Create the JWT security token and encode it.
             var jwt = new JwtSecurityToken(
                 issuer: _jwtOptions.Issuer,
@@ -44,13 +50,15 @@ namespace MadeLine.Api.Auth
             return encodedJwt;
         }
 
-        public ClaimsIdentity GenerateClaimsIdentity(string userName, string id)
+        public ClaimsIdentity GenerateClaimsIdentity(string userName, string id, IEnumerable<string> roles)
         {
-            return new ClaimsIdentity(new GenericIdentity(userName, "Token"), new[]
+            var claims = new List<Claim>() { new Claim(StaticVariables.JWT_ID, id) };
+            foreach (var item in roles)
             {
-                new Claim(StaticVariables.JWT_ID, id),
-                new Claim(StaticVariables.JWT_ROL, StaticVariables.JWT_API_ACCESS)
-            });
+                claims.Add(new Claim(ClaimTypes.Role, item));
+            }
+            
+            return new ClaimsIdentity(new GenericIdentity(userName, "Token"), claims);
         }
 
         /// <returns>Date converted to seconds since Unix epoch (Jan 1, 1970, midnight UTC).</returns>

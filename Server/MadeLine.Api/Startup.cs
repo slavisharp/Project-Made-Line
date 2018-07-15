@@ -31,7 +31,7 @@
 
             services.Configure<AppSettings>(appSettings);
             services.AddMemoryCache();
-            DataServicesConfig.ConfigureDataServices(services, Configuration);
+            DataServicesConfig.ConfigureDataServices(services, Configuration, parsedSettings);
             WebServicesConfig.ConfigureWebServices(services);
             UserServicesConfig.ConfigureAppServices(services);
             ManagersConfig.ConfigureAppManagers(services);

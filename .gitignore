@@ -53,6 +53,11 @@ project.lock.json
 project.fragment.lock.json
 artifacts/
 **/Properties/launchSettings.json
+# ignore appsettings configuration files
+**/appsettings.json
+**/appsettings.Development.json
+**/appsettings.Staging.json
+**/appsettings.Production.json
 
 # StyleCop
 StyleCopReport.xml

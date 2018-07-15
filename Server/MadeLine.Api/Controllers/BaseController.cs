@@ -6,7 +6,8 @@
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.Extensions.Options;
     using System.Threading.Tasks;
-
+    
+    [ApiController]
     [Produces("application/json")]
     public abstract class BaseController : ControllerBase
     {
