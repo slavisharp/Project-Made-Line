@@ -15,7 +15,7 @@ class Men extends Component {
     return (
       <div className="men-wrap">
         <div className="content men">Men</div>
-        <div className="women">Women</div>  
+        <div className="women">Women</div>
       </div>
     );
   }

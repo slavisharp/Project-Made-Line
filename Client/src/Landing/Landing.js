@@ -3,6 +3,7 @@ import { observable } from "mobx";
 import { observer } from "mobx-react";
 import Half from "./Half/Half";
 import "./Landing.css";
+
 @observer
 class Landing extends Component {
   @observable a = "";
@@ -13,7 +14,7 @@ class Landing extends Component {
 
   render() {
     return (
-      <div className='landing'>
+      <div className="landing">
         <Half type="men" />
         <Half type="women" />
       </div>
