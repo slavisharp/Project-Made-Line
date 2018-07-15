@@ -15,7 +15,7 @@
         internal static void ConfigureDataServices(IServiceCollection services, IConfiguration config, AppSettings settings)
         {
             services.AddDbContext<ApplicationDbContext>(options =>
-                options.UseSqlServer(config.GetConnectionString(settings.DbSettings.AppHarborConnectionName)));
+                options.UseSqlServer(config.GetConnectionString(settings.DbSettings.LocalConnectionName)));
 
             var builder = services.AddIdentityCore<ApplicationUser>(options =>
             {
