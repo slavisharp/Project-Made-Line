@@ -6,18 +6,33 @@ import "./Half.css";
 @inject(["stores"])
 @observer
 class Half extends Component {
-  @observable a = "";
+  @observable comingFromPage = "";
 
-  // constructor(props) {
-  //   super(props);
-  // }
+  constructor(props) {
+    super(props);
+    this.handleComingFromPage();
+  }
 
-  componentDidMount() {
-    console.log(this.props.stores.CurrentPage.page);
+  handleComingFromPage = () => {
+    if (this.props.stores.CurrentPage.page == "men") {
+      this.comingFromPage = "coming-from-" + this.props.stores.CurrentPage.page;
+    } else if (this.props.stores.CurrentPage.page == "women") {
+      this.comingFromPage = "coming-from-" + this.props.stores.CurrentPage.page;
+    } else {
+      return;
+    }
+  };
+
+  componentWillUnmount() {
+    this.props.stores.CurrentPage.page = "";
   }
 
   render() {
-    return <div className={`half ${this.props.type}`}>{this.props.type}</div>;
+    return (
+      <div className={`half ${this.props.type} ${this.comingFromPage}`}>
+        {this.props.type}
+      </div>
+    );
   }
 }
 

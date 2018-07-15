@@ -6,9 +6,65 @@
 .men {
   background-color: #1f1f21;
   color: #f2e5de;
-} 
+}
+
+.men.coming-from-men {
+  flex: 90%;
+  animation: animate-men-coming-from-men 0.5s forwards;
+}
+
+.men.coming-from-women {
+  flex: 10%;
+  animation: animate-men-coming-from-women 0.5s forwards;
+}
 
 .women {
   background-color: #f2e5de;
   color: #1f1f21;
+}
+
+.women.coming-from-men {
+  flex: 10%;
+  animation: animate-women-coming-from-men 0.5s forwards;
+}
+
+.women.coming-from-women {
+  flex: 90%;
+  animation: animate-women-coming-from-women 0.5s forwards;
+}
+
+@keyframes animate-men-coming-from-men {
+  from {
+    flex: 90%;
+  }
+  to {
+    flex: 50%;
+  }
+}
+
+@keyframes animate-women-coming-from-men {
+  from {
+    flex: 10%;
+  }
+  to {
+    flex: 50%;
+  }
+}
+
+@keyframes animate-men-coming-from-women {
+  from {
+    flex: 10%;
+  }
+  to {
+    flex: 50%;
+  }
+}
+
+@keyframes animate-women-coming-from-women {
+  from {
+    flex: 90%;
+  }
+  to {
+    flex: 50%;
+  }
 }

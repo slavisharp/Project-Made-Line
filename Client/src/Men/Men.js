@@ -1,8 +1,9 @@
 import React, { Component } from "react";
 import { observable } from "mobx";
-import { observer } from "mobx-react";
+import { observer, inject } from "mobx-react";
 import "./Men.css";
 
+@inject(["stores"])
 @observer
 class Men extends Component {
   @observable a = "";
@@ -10,6 +11,10 @@ class Men extends Component {
   // constructor(props) {
   //   super(props);
   // }
+
+  componentDidMount() {
+    this.props.stores.CurrentPage.page = "men";
+  }
 
   render() {
     return (
