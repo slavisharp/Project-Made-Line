@@ -14,7 +14,7 @@
             //services.AddTransient<IImageManager, ImageManager>();
             //services.AddTransient<IOrderManager, OrderManager>();
             //services.AddTransient<ICartManager, CartManager>();
-            //services.AddTransient<IProductManager, ProductManager>();
+            services.AddTransient<IProductManager, ProductManager>();
         }
     }
 }

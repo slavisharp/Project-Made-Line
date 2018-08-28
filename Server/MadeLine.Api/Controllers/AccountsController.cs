@@ -26,12 +26,12 @@
         /// <returns>Message</returns>
         [HttpPost]
         [ProducesResponseType(statusCode: 200, Type = typeof(OkObjectViewModel))]
-        [ProducesResponseType(statusCode: 400, Type = typeof(BadRequestViewModel<IdentityError>))]
+        [ProducesResponseType(statusCode: 400, Type = typeof(BadRequestViewModel<ModelStateError>))]
         public async Task<ActionResult<OkObjectViewModel>> Post([FromBody]RegisterViewModel model)
         {
             if (!ModelState.IsValid)
             {
-                return BadRequest(ModelState);
+                return new BadRequestObjectResult(new BadRequestViewModel<ModelStateError>(ModelState.GetErrors()));
             }
 
             IdentityResult result = null;
@@ -47,11 +47,12 @@
             
             if (result.Succeeded)
             {
-                return new OkObjectResult(new OkObjectViewModel { Message = "Account created" });
+                return new OkObjectResult(new OkObjectViewModel("Account created"));
             }
             else
             {
-                return new BadRequestObjectResult(new BadRequestViewModel<IdentityError> () { Errors = result.Errors });
+                base.AddIdentityErrorsToModelState(result.Errors);
+                return new BadRequestObjectResult(new BadRequestViewModel<ModelStateError>(ModelState.GetErrors()));
             }
         }
     }

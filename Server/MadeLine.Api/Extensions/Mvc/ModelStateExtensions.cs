@@ -1,4 +1,4 @@
-﻿namespace MadeLine.Api.Extensions.Mvc
+﻿namespace Microsoft.AspNetCore.Mvc
 {
     using Microsoft.AspNetCore.Mvc.ModelBinding;
     using System.Collections.Generic;

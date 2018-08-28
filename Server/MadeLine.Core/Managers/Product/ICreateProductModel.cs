@@ -17,7 +17,7 @@
 
         string Description { get; set; }
 
-        int HighlightImageId { get; set; }
+        int? HighlightImageId { get; set; }
 
         bool IsHighlighted { get; set; }
 

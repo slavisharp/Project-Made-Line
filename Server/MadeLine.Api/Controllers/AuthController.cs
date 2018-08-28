@@ -1,22 +1,17 @@
 ﻿namespace MadeLine.Api.Controllers
 {
     using MadeLine.Api.Auth;
-    using MadeLine.Api.Extensions.Mvc;
     using MadeLine.Api.Helpers;
     using MadeLine.Api.ViewModels;
     using MadeLine.Api.ViewModels.Accounts;
     using MadeLine.Core.Managers;
     using MadeLine.Core.Settings;
     using MadeLine.Data.Models;
-    using Microsoft.AspNetCore.Identity;
     using Microsoft.AspNetCore.Mvc;
-    using Microsoft.AspNetCore.Mvc.ModelBinding;
     using Microsoft.Extensions.Options;
     using Newtonsoft.Json;
     using System;
-    using System.Collections;
     using System.Collections.Generic;
-    using System.Linq;
     using System.Net.Http;
     using System.Security.Claims;
     using System.Text;
@@ -55,14 +50,14 @@
         {
             if (!ModelState.IsValid)
             {
-                return new BadRequestObjectResult(new BadRequestViewModel<ModelStateError>() { Errors = ModelState.GetErrors() });
+                return new BadRequestObjectResult(new BadRequestViewModel<ModelStateError>(ModelState.GetErrors()));
             }
 
             var identity = await GetClaimsIdentity(credentials.Email, credentials.Password);
             if (identity == null)
             {
                 ModelState.AddModelError(string.Empty, "Invalid username or password.");
-                return new BadRequestObjectResult(new BadRequestViewModel<ModelStateError>() { Errors = ModelState.GetErrors() });
+                return new BadRequestObjectResult(new BadRequestViewModel<ModelStateError>(ModelState.GetErrors()));
             }
 
             var jwt = await Token.GenerateJwt(
@@ -72,7 +67,7 @@
                 jwtOptions, 
                 new JsonSerializerSettings { Formatting = Formatting.Indented });
 
-            return new OkObjectResult(new OkObjectViewModel<ResponseTokenViewModel>() { Message = "Success", Data = jwt });
+            return new OkObjectResult(new OkObjectViewModel<ResponseTokenViewModel>("Success", jwt));
         }
 
         // POST api/auth/facebook
