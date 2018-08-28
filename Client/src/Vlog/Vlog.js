@@ -1,8 +1,9 @@
 import React, { Component } from "react";
 import { observable } from "mobx";
-import { observer } from "mobx-react";
+import { observer, inject } from "mobx-react";
 import "./Vlog.css";
 
+@inject(["stores"])
 @observer
 class Vlog extends Component {
   @observable a = "";
@@ -10,6 +11,10 @@ class Vlog extends Component {
   // constructor(props) {
   //   super(props);
   // }
+
+  componentDidMount() {
+    this.props.stores.CurrentPage.page = "vlog";
+  }
 
   render() {
     return <div className="content vlog">Vlog</div>;

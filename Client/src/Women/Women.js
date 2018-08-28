@@ -19,8 +19,8 @@ class Women extends Component {
   render() {
     return (
       <div className="women-wrap">
-        <div className="men">Men</div>
-        <div className="content women">Women</div>
+        <div className="men content-padded">Men</div>
+        <div className="content women content-padded">Women</div>
       </div>
     );
   }
