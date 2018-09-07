@@ -7,9 +7,10 @@
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.Extensions.Options;
     using System.Linq;
+    using System.Net;
     using System.Threading.Tasks;
 
-    [Route("api/[controller]")]
+    [Route("api/products")]
     public class ProductsController : BaseController
     {
         private IProductManager manager;
@@ -39,6 +40,8 @@
             var vm = this.manager.GetQueryById(result.Model.Id)
                 .Select(p => new ProductDetailsViewModel() { })
                 .FirstOrDefault();
+            
+            base.Response.StatusCode = (int)HttpStatusCode.Created;
             return new OkObjectViewModel<ProductDetailsViewModel>("Success", vm);
         }
 

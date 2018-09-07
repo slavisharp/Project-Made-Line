@@ -1,5 +1,6 @@
 ﻿namespace MadeLine.Core.Settings
 {
+    using MadeLine.Data.Models;
     using System.Collections.Generic;
 
     public class AppSettings
@@ -15,6 +16,8 @@
         public string UserRole { get; set; }
 
         public string BrandRole { get; set; }
+        
+        public TranslationLanguage DefaultLanguage { get; set; }
 
         public DbSettings DbSettings { get; set; }
 

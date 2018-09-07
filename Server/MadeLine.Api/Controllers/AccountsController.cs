@@ -9,7 +9,7 @@
     using System;
     using System.Threading.Tasks;
 
-    [Route("api/[controller]")]
+    [Route("api/accounts")]
     public class AccountsController : BaseController
     {
         private IAccountManager manager;

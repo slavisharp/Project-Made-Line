@@ -6,6 +6,11 @@
     public class ManagerActionResultModel<T> : IManagerActionResultModel<T>
         where T: class
     {
+        public ManagerActionResultModel()
+        {
+            this.Errors = new List<IErrorResultModel>();
+        }
+
         public bool Succeeded { get; set; }
 
         public T Model { get; set; }
@@ -17,6 +22,12 @@
     {
         public ErrorResultModel()
         { }
+
+        public ErrorResultModel(string code, string message)
+        {
+            this.Code = code;
+            this.Message = message;
+        }
 
         public ErrorResultModel(Exception ex)
         {

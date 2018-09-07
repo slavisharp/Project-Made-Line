@@ -17,7 +17,7 @@
     using System.Text;
     using System.Threading.Tasks;
 
-    [Route("api/[controller]")]
+    [Route("api/auth")]
     public class AuthController : BaseController
     {
         //private readonly UserManager<ApplicationUser> userManager;

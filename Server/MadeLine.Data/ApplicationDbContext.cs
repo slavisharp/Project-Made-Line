@@ -143,6 +143,10 @@
                 .IsUnique(true);
 
             builder.Entity<Product>()
+                .HasIndex(p => p.IsDeleted)
+                .IsUnique(true);
+
+            builder.Entity<Product>()
                 .HasIndex(p => p.IsHighlighted);
 
             builder.Entity<Product>()

@@ -45,47 +45,74 @@
             }
 
             var result = new ManagerActionResultModel<Product>();
+            result.Succeeded = true;
             try
             {
                 var brand = await this.brandRepo.GetByIdAsync(model.BrandId);
+                if (brand == null)
+                {
+                    result.Succeeded = false;
+                    result.Errors.Add(new ErrorResultModel(nameof(model.BrandId), "Brand not found!"));
+                }
+
                 var color = await this.colorRepo.GetByIdAsync(model.ColorId);
+                if (color == null)
+                {
+                    result.Succeeded = false;
+                    result.Errors.Add(new ErrorResultModel(nameof(model.ColorId), "Color not found!"));
+                }
+
                 var mainImage = await this.imageRepo.GetByIdAsync(model.MainImageId);
+                if (mainImage == null)
+                {
+                    result.Succeeded = false;
+                    result.Errors.Add(new ErrorResultModel(nameof(model.MainImageId), "Main image not found!"));
+                }
+
                 var hilightImage = model.HighlightImageId != null ? await this.imageRepo.GetByIdAsync(model.HighlightImageId) : mainImage;
-                var product = new Product()
+                if (hilightImage == null)
                 {
-                    Alias = model.Alias,
-                    Brand = brand,
-                    BrandId = model.BrandId,
-                    Color = color,
-                    ColorId = model.ColorId,
-                    Description = model.Description,
-                    IsHighlighted = model.IsHighlighted,
-                    Price = model.Price,
-                    MainImage = mainImage,
-                    MainImageId = model.MainImageId,
-                    HighlightImage = hilightImage,
-                    Name = model.Name,
-                    SKUCode = model.SKUCode,
-                    TargetType = model.TargetType,
-                    Status = ProductStatus.Draft
-                };
-
-                if (model.SizeIds != null)
-                {
-                    var sizes = this.sizeRepo.GetRange(model.SizeIds).ToList();
-                    await AddSizesToProduct(product, sizes);
+                    result.Succeeded = false;
+                    result.Errors.Add(new ErrorResultModel(nameof(model.HighlightImageId), "Highlight image not found!"));
                 }
 
-                if (model.CategoryIds != null)
+                if (result.Succeeded)
                 {
-                    var categories = this.categoryRepo.GetRange(model.CategoryIds).ToList();
-                    await AddCategoriesToProduct(product, categories);
+                    var product = new Product()
+                    {
+                        Alias = model.Alias,
+                        Brand = brand,
+                        BrandId = model.BrandId,
+                        Color = color,
+                        ColorId = model.ColorId,
+                        Description = model.Description,
+                        IsHighlighted = model.IsHighlighted,
+                        Price = model.Price,
+                        MainImage = mainImage,
+                        MainImageId = model.MainImageId,
+                        HighlightImage = hilightImage,
+                        Name = model.Name,
+                        SKUCode = model.SKUCode,
+                        TargetType = model.TargetType,
+                        Status = ProductStatus.Draft
+                    };
+
+                    if (model.SizeIds != null)
+                    {
+                        var sizes = this.sizeRepo.GetRange(model.SizeIds).ToList();
+                        await AddSizesToProduct(product, sizes);
+                    }
+
+                    if (model.CategoryIds != null)
+                    {
+                        var categories = this.categoryRepo.GetRange(model.CategoryIds).ToList();
+                        await AddCategoriesToProduct(product, categories);
+                    }
+
+                    await this.repository.AddAsync(product);
+                    await this.repository.SaveAsync();
+                    result.Model = product;
                 }
-                
-                await this.repository.AddAsync(product);
-                await this.repository.SaveAsync();
-                result.Succeeded = true;
-                result.Model = product;
             }
             catch (Exception ex)
             {
@@ -112,7 +139,7 @@
 
         public IQueryable<Product> GetQuery()
         {
-            return this.repository.All();
+            return this.repository.All().Where(p => !p.IsDeleted);
         }
 
         public IQueryable<Product> GetQueryById(int id)

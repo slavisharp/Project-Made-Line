@@ -89,6 +89,7 @@
     public enum ProductTargetType
     {
         Women = 1,
-        Men = 2
+        Men = 2,
+        Children = 3
     }
 }
