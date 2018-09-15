@@ -11,7 +11,7 @@
 
         [Required]
         [MaxLength(50)]
-        public int Name { get; set; }
+        public string Name { get; set; }
 
         [InverseProperty("Size")]
         public virtual ICollection<ProductSize> Products { get; set; }
