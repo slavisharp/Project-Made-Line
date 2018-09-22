@@ -16,7 +16,9 @@
         public string UserRole { get; set; }
 
         public string BrandRole { get; set; }
-        
+
+        public string ImagesRelativePath { get; set; }
+                
         public TranslationLanguage DefaultLanguage { get; set; }
 
         public DbSettings DbSettings { get; set; }

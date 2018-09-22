@@ -8,12 +8,10 @@
         internal static void ConfigureAppManagers(IServiceCollection services)
         {
             services.AddTransient<IAccountManager, AccountManager>();
-            //services.AddTransient<IHomePageManager, HomePageManager>();
-            //services.AddTransient<IBlogPostManager, BlogPostManager>();
-            //services.AddTransient<IQuoteManager, QuoteManager>();
-            //services.AddTransient<IImageManager, ImageManager>();
-            //services.AddTransient<IOrderManager, OrderManager>();
-            //services.AddTransient<ICartManager, CartManager>();
+            services.AddTransient<IImageManager, ImageManager>();
+            services.AddTransient<IProductCategoriesManager, ProductCategoriesManager>();
+            services.AddTransient<IProductColorsManager, ProductColorsManager>();
+            services.AddTransient<IProductSizesManager, ProductSizesManager>();
             services.AddTransient<IProductManager, ProductManager>();
         }
     }

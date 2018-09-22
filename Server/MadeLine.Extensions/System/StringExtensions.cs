@@ -39,5 +39,17 @@
         {
             return string.Format(s, args);
         }
+
+        public static string SubstringFrom(this string s, string separator)
+        {
+            var index = s.IndexOf(separator) + 1;
+            return s.Substring(index);
+        }
+
+        public static string SubstringFromLast(this string s, string separator)
+        {
+            var index = s.LastIndexOf(separator) + 1;
+            return s.Substring(index);
+        }
     }
 }
