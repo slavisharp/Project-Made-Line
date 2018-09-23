@@ -4,6 +4,10 @@
 
     public class ImageDetailsViewModel
     {
+        public ImageDetailsViewModel()
+        {
+        }
+
         public ImageDetailsViewModel(Image entity)
         {
             this.Id = entity.Id;

@@ -17,7 +17,7 @@
         public int Id { get; set; }
     }
 
-    public class UpdateCategoryTranslationViewModel : UpdateCategoryViewModel, ICategoryTranslationModel
+    public class UpdateCategoryTranslationViewModel : UpdateCategoryViewModel, ITranslationCategoryModel
     {
         public TranslationLanguage Language { get; set; }
     }

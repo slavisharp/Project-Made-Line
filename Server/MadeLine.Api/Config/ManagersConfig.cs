@@ -11,8 +11,9 @@
             services.AddTransient<IImageManager, ImageManager>();
             services.AddTransient<IProductCategoriesManager, ProductCategoriesManager>();
             services.AddTransient<IProductColorsManager, ProductColorsManager>();
-            services.AddTransient<IProductSizesManager, ProductSizesManager>();
             services.AddTransient<IProductManager, ProductManager>();
+            services.AddTransient<IProductSizesManager, ProductSizesManager>();
+            services.AddTransient<IVlogManager, VlogManager>();
         }
     }
 }

@@ -35,12 +35,12 @@
 
         [HttpGet("{id}")]
         [ProducesResponseType(statusCode: 404)]
-        [ProducesResponseType(statusCode: 200, Type = typeof(OkObjectViewModel<SizeDetailsViewModel>))]
-        public ActionResult<IEnumerable<SizeDetailsViewModel>> Details(int id)
+        [ProducesResponseType(statusCode: 200, Type = typeof(SizeDetailsViewModel))]
+        public ActionResult<SizeDetailsViewModel> Details(int id)
         {
             var vm = this.manager.GetQueryById(id)
                 .Select(SizeDetailsViewModel.FromEntity)
-                .ToArray();
+                .FirstOrDefault();
 
             return vm;
         }

@@ -1,7 +1,7 @@
 ﻿namespace MadeLine.Api.Controllers
 {
     using MadeLine.Api.ViewModels;
-    using MadeLine.Api.ViewModels.Products;
+    using MadeLine.Api.ViewModels.Vlogs;
     using MadeLine.Core.Managers;
     using MadeLine.Core.Settings;
     using MadeLine.Data.Models;
@@ -12,22 +12,22 @@
     using System.Net;
     using System.Threading.Tasks;
 
-    [Route("api/products/categories")]
-    public class ProductCategoriesController : BaseController
+    [Route("api/vlogs")]
+    public class VlogsController : BaseController
     {
-        private IProductCategoriesManager manager;
+        private IVlogManager manager;
 
-        public ProductCategoriesController(IOptions<AppSettings> options, IProductCategoriesManager productManger) : base(options)
+        public VlogsController(IOptions<AppSettings> options, IVlogManager manager) : base(options)
         {
-            this.manager = productManger;
+            this.manager = manager;
         }
 
         [HttpGet]
-        [ProducesResponseType(statusCode: 200, Type = typeof(IEnumerable<CategoryDetailsViewModel>))]
-        public ActionResult<IEnumerable<CategoryDetailsViewModel>> Index(ISearchCategoryModel search)
+        [ProducesResponseType(statusCode: 200, Type = typeof(IEnumerable<VlogDetailsViewModel>))]
+        public ActionResult<IEnumerable<VlogDetailsViewModel>> Index(ISearchVlogModel search)
         {
-            var vm = this.manager.SearchProductCategory(search)
-                .Select(CategoryDetailsViewModel.FromEntity(search.Language ?? base.AppSettings.DefaultLanguage))
+            var vm = this.manager.SearchVlogs(search)
+                .Select(VlogDetailsViewModel.FromEntity(search.Language ?? base.AppSettings.DefaultLanguage))
                 .ToArray();
 
             return vm;
@@ -35,27 +35,27 @@
 
         [HttpGet("{id}")]
         [ProducesResponseType(statusCode: 404)]
-        [ProducesResponseType(statusCode: 200, Type = typeof(CategoryDetailsViewModel))]
-        public ActionResult<CategoryDetailsViewModel> Details(int id, TranslationLanguage? language = null)
+        [ProducesResponseType(statusCode: 200, Type = typeof(VlogDetailsViewModel))]
+        public ActionResult<VlogDetailsViewModel> Details(int id, TranslationLanguage? language = null)
         {
             var vm = this.manager.GetQueryById(id)
-                .Select(CategoryDetailsViewModel.FromEntity(language ?? base.AppSettings.DefaultLanguage))
+                .Select(VlogDetailsViewModel.FromEntity(language ?? base.AppSettings.DefaultLanguage))
                 .FirstOrDefault();
 
             return vm;
         }
-
+        
         [HttpPost]
         [ProducesResponseType(statusCode: 400, Type = typeof(BadRequestViewModel<ModelStateError>))]
-        [ProducesResponseType(statusCode: 201, Type = typeof(OkObjectViewModel<CategoryDetailsViewModel>))]
-        public async Task<ActionResult<OkObjectViewModel<CategoryDetailsViewModel>>> Create(CreateCategoryViewModel model)
+        [ProducesResponseType(statusCode: 201, Type = typeof(OkObjectViewModel<VlogDetailsViewModel>))]
+        public async Task<ActionResult<OkObjectViewModel<VlogDetailsViewModel>>> Create(CreateVlogViewModel model)
         {
             if (!ModelState.IsValid)
             {
                 return new BadRequestObjectResult(new BadRequestViewModel<ModelStateError>(ModelState.GetErrors()));
             }
 
-            var result = await this.manager.CreateProductCategoryAsync(model);
+            var result = await this.manager.CreateVlogAsync(model);
             if (!result.Succeeded)
             {
                 AddManagerErrorsToModelState(result.Errors);
@@ -63,24 +63,24 @@
             }
 
             var vm = this.manager.GetQueryById(result.Model.Id)
-                .Select(CategoryDetailsViewModel.FromEntity(AppSettings.DefaultLanguage))
+                .Select(VlogDetailsViewModel.FromEntity(AppSettings.DefaultLanguage))
                 .FirstOrDefault();
 
             base.Response.StatusCode = (int)HttpStatusCode.Created;
-            return new OkObjectViewModel<CategoryDetailsViewModel>("Success", vm);
+            return new OkObjectViewModel<VlogDetailsViewModel>("Success", vm);
         }
 
         [HttpPut]
         [ProducesResponseType(statusCode: 400, Type = typeof(BadRequestViewModel<ModelStateError>))]
-        [ProducesResponseType(statusCode: 200, Type = typeof(OkObjectViewModel<CategoryDetailsViewModel>))]
-        public async Task<ActionResult<OkObjectViewModel<CategoryDetailsViewModel>>> Update(UpdateCategoryViewModel model)
+        [ProducesResponseType(statusCode: 200, Type = typeof(OkObjectViewModel<VlogDetailsViewModel>))]
+        public async Task<ActionResult<OkObjectViewModel<VlogDetailsViewModel>>> Update(UpdateVlogViewModel model)
         {
             if (!ModelState.IsValid)
             {
                 return new BadRequestObjectResult(new BadRequestViewModel<ModelStateError>(ModelState.GetErrors()));
             }
 
-            var result = await this.manager.UpdateProductCategoryAsync(model);
+            var result = await this.manager.UpdateVlogAsync(model);
             if (!result.Succeeded)
             {
                 AddManagerErrorsToModelState(result.Errors);
@@ -88,24 +88,24 @@
             }
 
             var vm = this.manager.GetQueryById(result.Model.Id)
-                 .Select(CategoryDetailsViewModel.FromEntity(AppSettings.DefaultLanguage))
+                 .Select(VlogDetailsViewModel.FromEntity(AppSettings.DefaultLanguage))
                  .FirstOrDefault();
 
             base.Response.StatusCode = (int)HttpStatusCode.Created;
-            return new OkObjectViewModel<CategoryDetailsViewModel>("Success", vm);
+            return new OkObjectViewModel<VlogDetailsViewModel>("Success", vm);
         }
 
         [HttpPut("translations")]
         [ProducesResponseType(statusCode: 400, Type = typeof(BadRequestViewModel<ModelStateError>))]
-        [ProducesResponseType(statusCode: 200, Type = typeof(OkObjectViewModel<CategoryDetailsViewModel>))]
-        public async Task<ActionResult<OkObjectViewModel<CategoryDetailsViewModel>>> UpdateTrasnlation(UpdateCategoryTranslationViewModel model)
+        [ProducesResponseType(statusCode: 200, Type = typeof(OkObjectViewModel<VlogDetailsViewModel>))]
+        public async Task<ActionResult<OkObjectViewModel<VlogDetailsViewModel>>> UpdateTrasnlation(UpdateVlogTranslationViewModel model)
         {
             if (!ModelState.IsValid)
             {
                 return new BadRequestObjectResult(new BadRequestViewModel<ModelStateError>(ModelState.GetErrors()));
             }
 
-            var result = await this.manager.UpdateProductCategoryTranslation(model);
+            var result = await this.manager.UpdateVlogTranslation(model);
             if (!result.Succeeded)
             {
                 AddManagerErrorsToModelState(result.Errors);
@@ -113,11 +113,11 @@
             }
 
             var vm = this.manager.GetQueryById(result.Model.Id)
-                 .Select(CategoryDetailsViewModel.FromEntity(model.Language))
+                 .Select(VlogDetailsViewModel.FromEntity(model.Language))
                  .FirstOrDefault();
 
             base.Response.StatusCode = (int)HttpStatusCode.Created;
-            return new OkObjectViewModel<CategoryDetailsViewModel>("Success", vm);
+            return new OkObjectViewModel<VlogDetailsViewModel>("Success", vm);
         }
     }
 }

@@ -133,7 +133,7 @@
             return result;
         }
 
-        public async Task<IManagerActionResultModel<Category>> UpdateProductCategoryTranslation(ICategoryTranslationModel model)
+        public async Task<IManagerActionResultModel<Category>> UpdateProductCategoryTranslation(ITranslationCategoryModel model)
         {
             var result = new ManagerActionResultModel<Category>();
             Category entity = await this.GetByIdAsync(model.Id);
@@ -149,7 +149,7 @@
             }
             else
             {
-                CategoryTranslation translation = entity.Translations.Where(t => t.Language == this.appSettings.DefaultLanguage).FirstOrDefault();
+                CategoryTranslation translation = entity.Translations.Where(t => t.Language == model.Language).FirstOrDefault();
                 if (translation == null)
                 {
                     translation = new CategoryTranslation()

@@ -18,6 +18,6 @@
 
         Task<IManagerActionResultModel<Category>> UpdateProductCategoryAsync(IUpdateCategoryModel model);
 
-        Task<IManagerActionResultModel<Category>> UpdateProductCategoryTranslation(ICategoryTranslationModel model);
+        Task<IManagerActionResultModel<Category>> UpdateProductCategoryTranslation(ITranslationCategoryModel model);
     }
 }

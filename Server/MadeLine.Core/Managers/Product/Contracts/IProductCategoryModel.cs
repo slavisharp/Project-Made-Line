@@ -19,7 +19,7 @@
         string Name { get; set; }
     }
 
-    public interface ICategoryTranslationModel : IUpdateCategoryModel
+    public interface ITranslationCategoryModel : IUpdateCategoryModel
     {
         TranslationLanguage Language { get; set; }
     }
