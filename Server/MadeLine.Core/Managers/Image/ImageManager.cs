@@ -53,7 +53,7 @@
 
             string fileName = image.FileName;
             string fileExtension = fileName.SubstringFromLast(".").ToLowerInvariant();
-            if (!StaticVariables.ImageExtensions.Contains(fileExtension))
+            if (!StaticVariables.IMAGE_EXTENSIONS.Contains(fileExtension))
             {
                 throw new ArgumentException("Unsupported image format!");
             }

@@ -14,7 +14,7 @@
 
         IQueryable<Vlog> GetQueryByAlias(string alias);
 
-        IQueryable<Vlog> SearchVlogs(ISearchVlogModel model);
+        ISearchResultModel<Vlog> SearchVlogs(ISearchVlogModel model);
 
         Task<IManagerActionResultModel<Vlog>> CreateVlogAsync(ICreateVlogModel model);
 

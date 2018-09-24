@@ -11,25 +11,25 @@
         
         int ColorId { get; set; }
 
-        IEnumerable<int> CategoryIds { get; set; }
-
         string Description { get; set; }
 
         int? HighlightImageId { get; set; }
-
-        bool IsHighlighted { get; set; }
-
+        
         int MainImageId { get; set; }
         
         string Name { get; set; }
 
         decimal Price { get; set; }
 
-        IEnumerable<int> SizeIds { get; set; }
-
         string SKUCode { get; set; }
 
         ProductTargetType TargetType { get; set; }
+
+        IEnumerable<int> CategoryIds { get; set; }
+
+        IEnumerable<int> SizeIds { get; set; }
+
+        IEnumerable<int> GalleryImageIds { get; set; }
     }
 
     public interface IUpdateProductModel : ICreateProductModel

@@ -23,13 +23,18 @@
         }
 
         [HttpGet]
-        [ProducesResponseType(statusCode: 200, Type = typeof(IEnumerable<VlogDetailsViewModel>))]
-        public ActionResult<IEnumerable<VlogDetailsViewModel>> Index(ISearchVlogModel search)
+        [ProducesResponseType(statusCode: 200, Type = typeof(SearchResultModel<VlogDetailsViewModel>))]
+        public ActionResult<ISearchResultModel<VlogDetailsViewModel>> Index(ISearchVlogModel search)
         {
-            var vm = this.manager.SearchVlogs(search)
-                .Select(VlogDetailsViewModel.FromEntity(search.Language ?? base.AppSettings.DefaultLanguage))
-                .ToArray();
-
+            var result = this.manager.SearchVlogs(search);
+            var vm = new SearchResultModel<VlogDetailsViewModel>()
+            {
+                List = result.List.Select(VlogDetailsViewModel.FromEntity(search.Language ?? base.AppSettings.DefaultLanguage)),
+                Page = result.Page,
+                PageCount = result.PageCount,
+                PageSize = result.PageSize,
+                TotalCount = result.TotalCount
+            };
             return vm;
         }
 

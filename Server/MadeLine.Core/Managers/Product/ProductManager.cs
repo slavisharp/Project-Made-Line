@@ -12,6 +12,7 @@
         private IRepository<Product> repository;
         private IRepository<Brand> brandRepo;
         private IRepository<Image> imageRepo;
+        private IRepository<ProductImage> productImageRepo;
         private IRepository<ProductSize> productSizeRepo;
         private IRepository<Size> sizeRepo;
         private IRepository<ProductColor> colorRepo;
@@ -22,6 +23,7 @@
                                 IRepository<ProductColor> colorRepo,
                                 IRepository<Brand> brandRepo,
                                 IRepository<Image> imageRepo,
+                                IRepository<ProductImage> productImageRepo,
                                 IRepository<ProductSize> productSizeRepo,
                                 IRepository<Size> sizeRepo,
                                 IRepository<Category> categoryRepo,
@@ -30,6 +32,7 @@
             this.repository = repo;
             this.brandRepo = brandRepo;
             this.imageRepo = imageRepo;
+            this.productImageRepo = productImageRepo;
             this.productSizeRepo = productSizeRepo;
             this.sizeRepo = sizeRepo;
             this.colorRepo = colorRepo;
@@ -86,7 +89,6 @@
                         Color = color,
                         ColorId = model.ColorId,
                         Description = model.Description,
-                        IsHighlighted = model.IsHighlighted,
                         Price = model.Price,
                         MainImage = mainImage,
                         MainImageId = model.MainImageId,
@@ -107,6 +109,12 @@
                     {
                         var categories = this.categoryRepo.GetRange(model.CategoryIds).ToList();
                         await AddCategoriesToProduct(product, categories);
+                    }
+
+                    if (model.GalleryImageIds != null)
+                    {
+                        var images = this.imageRepo.GetRange(model.GalleryImageIds).ToList();
+                        await AddImagesToProduct(product, images);
                     }
 
                     await this.repository.AddAsync(product);
@@ -240,6 +248,18 @@
                 await this.productCategoryRepo.AddAsync(new ProductCategory()
                 {
                     Category = item,
+                    Product = product
+                });
+            }
+        }
+        
+        private async Task AddImagesToProduct(Product product, List<Image> images)
+        {
+            foreach (var item in images)
+            {
+                await this.productImageRepo.AddAsync(new ProductImage()
+                {
+                    Image = item,
                     Product = product
                 });
             }

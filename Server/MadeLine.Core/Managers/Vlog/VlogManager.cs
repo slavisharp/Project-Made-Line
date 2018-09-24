@@ -89,27 +89,52 @@
             return this.repository.All().Where(v => v.Id == id);
         }
 
-        public IQueryable<Vlog> SearchVlogs(ISearchVlogModel model)
+        public ISearchResultModel<Vlog> SearchVlogs(ISearchVlogModel model)
         {
             var query = this.repository.All();
-            if (model == null)
+            if (model != null)
             {
-                return query;
-            }
-
-            if (!string.IsNullOrWhiteSpace(model.Name))
-            {
-                if (model.Language != null)
+                if (!string.IsNullOrWhiteSpace(model.Name))
                 {
-                    query = query.Where(v => v.Translations.Where(t => t.Language == model.Language && t.Name.Contains(model.Name)).Any());
-                }
-                else
-                {
-                    query = query.Where(v => v.Name.Contains(model.Name));
+                    if (model.Language != null)
+                    {
+                        query = query.Where(v => v.Translations.Where(t => t.Language == model.Language && t.Name.Contains(model.Name)).Any());
+                    }
+                    else
+                    {
+                        query = query.Where(v => v.Name.Contains(model.Name));
+                    }
                 }
             }
 
-            return query;
+            int page = model != null ? model.Page : 1;
+            int pageSize = model != null ? model.PageSize : StaticVariables.DEFAULT_PAGE_SIZE;
+            int totalCount = query.Count();
+            int pageCount = totalCount / pageSize;
+            if (totalCount % pageSize > 0)
+            {
+                pageCount++;
+            }
+
+            if (page < 1)
+            {
+                page = 1;
+            }
+
+            if (pageSize < 1 || pageSize > StaticVariables.MAX_PAGE_SIZE)
+            {
+                pageSize = StaticVariables.DEFAULT_PAGE_SIZE;
+            }
+
+            query = query.OrderBy(m => m.Name).Skip((page - 1) * pageSize).Take(pageSize);
+            return new SearchResultModel<Vlog>()
+            {
+                List = query,
+                Page = page,
+                PageSize = pageSize,
+                PageCount = pageCount,
+                TotalCount = totalCount
+            };
         }
 
         public async Task<IManagerActionResultModel<Vlog>> UpdateVlogAsync(IUpdateVlogModel model)

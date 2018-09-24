@@ -1,6 +1,7 @@
 ﻿namespace MadeLine.Core.Managers
 {
     using MadeLine.Data.Models;
+    using System.Linq;
 
     public interface ICreateVlogModel
     {
@@ -23,8 +24,12 @@
         TranslationLanguage? Language { get; set; }
 
         string Name { get; set; }
-    }
 
+        int Page { get; set; }
+
+        int PageSize { get; set; }
+    }
+    
     public interface IUpdateTranslationVlogModel
     {
         int Id { get; set; }

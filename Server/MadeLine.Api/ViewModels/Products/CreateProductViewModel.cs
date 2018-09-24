@@ -18,14 +18,14 @@
         [Required]
         public int ColorId { get; set; }
 
+        [Required]
         public IEnumerable<int> CategoryIds { get; set; }
 
         public string Description { get; set; }
 
         public int? HighlightImageId { get; set; }
-
-        public bool IsHighlighted { get; set; }
-
+        
+        [Required]
         public int MainImageId { get; set; }
 
         [Required]
@@ -43,9 +43,7 @@
 
         [Required]
         public ProductTargetType TargetType { get; set; }
-
-        public IFormFile MainImageFile { get; set; }
-
-        public IFormFile HighlightImageFile { get; set; }
+        
+        public IEnumerable<int> GalleryImageIds { get; set; }
     }
 }

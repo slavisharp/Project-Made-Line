@@ -46,9 +46,9 @@
         }
 
         [HttpGet("{id}")]
-        [ProducesResponseType(statusCode: 200, Type = typeof(OkObjectViewModel<ProductDetailsViewModel>))]
+        [ProducesResponseType(statusCode: 200, Type = typeof(ProductDetailsViewModel))]
         [ProducesResponseType(statusCode: 404, Type = typeof(string))]
-        public ActionResult<OkObjectViewModel<ProductDetailsViewModel>> Details(int id)
+        public ActionResult<ProductDetailsViewModel> Details(int id)
         {
             var vm = this.manager.GetQueryById(id)
                 .Select(p => new ProductDetailsViewModel() { })
@@ -58,7 +58,7 @@
                 return new NotFoundObjectResult("Product not found");
             }
 
-            return new OkObjectResult(new OkObjectViewModel<ProductDetailsViewModel>("Success", vm));
+            return vm;
         }
     }
 }
